@@ -7,7 +7,7 @@ export default function App() {
     <div className="app-container">
       {/* sidebar */}
       <Sidebar />
-
+      
       {/* main content */}
       <main className="main-content">
         <Main />
