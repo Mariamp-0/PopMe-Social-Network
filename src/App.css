@@ -1,2 +1,12 @@
-@import "tailwindcss";
-@custom-variant dark (&:where(.dark, .dark *));
+/* Layout base for sidebar and main content */
+.app-container {
+  display: flex;
+}
+
+/* Main area beside the sidebar */
+.main-content {
+  flex: 1;
+  padding: 1.5rem;
+  margin-left: 220px; /* matches sidebar width */
+  color: white;
+}
