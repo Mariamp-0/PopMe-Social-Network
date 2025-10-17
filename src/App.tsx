@@ -1,11 +1,70 @@
-import Main from "./pages/Main";
+import { useEffect, useState } from "react";
+import SearchBar from "./components/SearchBar";
+import Post from "./components/Post";
 
-
-function App() {
-
-  //Show the main page in the app
-  return <Main />;
+interface PostData {
+  id: number;
+  userName: string;
+  userHandle: string;
+  movieTitle: string;
+  year: number;
+  rating: number;
+  reviewText: string;
+  movieImage: string;
+  userImage: string;
 }
 
+export default function App() {
+  const [posts, setPosts] = useState<PostData[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<PostData[]>([]);
 
-export default App;
+  useEffect(() => {
+    fetch("/data/postData.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+        setFilteredPosts(data);
+      })
+      .catch((err) => console.error("Error al cargar JSON:", err));
+  }, []);
+
+  const handleSearch = (term: string) => {
+    const lower = term.toLowerCase();
+    const filtered = posts.filter((post) =>
+      post.movieTitle.toLowerCase().includes(lower)
+    );
+    setFilteredPosts(filtered);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#1B1B1F] text-white p-6">
+      <h1 className="text-3xl font-bold text-center mb-6 text-[#AA0235]">
+        🎬 PopMe Social Network
+      </h1>
+
+      <SearchBar onSearch={handleSearch} />
+
+      <div className="mt-6 space-y-4">
+        {filteredPosts.length > 0 ? (
+          filteredPosts.map((post) => (
+            <Post
+              key={post.id}
+              username={post.userName}
+              handle={post.userHandle}
+              movieTitle={post.movieTitle}
+              year={post.year}
+              review={post.reviewText}
+              rating={post.rating}
+              poster={post.movieImage}
+              popcornUrl="https://cdn-icons-png.flaticon.com/512/4221/4221419.png"
+            />
+          ))
+        ) : (
+          <p className="text-center text-gray-400">
+            No se encontraron resultados 😢
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
