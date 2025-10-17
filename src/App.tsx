@@ -3,7 +3,7 @@ import Main from "./pages/Main"; // main page component
 import "./App.css"; // import the layout styles
 
 export default function App() {
-  return (
+   return (
     <div className="app-container">
       {/* sidebar */}
       <Sidebar />
@@ -15,4 +15,5 @@ export default function App() {
     </div>
   );
 }
+ 
 
