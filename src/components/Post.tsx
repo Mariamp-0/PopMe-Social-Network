@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// Defines what data the post component will receive
 interface PostProps {
   username: string;
   handle: string;
@@ -21,13 +22,20 @@ export default function Post({
   poster,
   popcornUrl,
 }: PostProps) {
+  // State to check if the user is followed
   const [isFollowing, setIsFollowing] = useState(false);
+
+  // State to check if the post is liked
   const [liked, setLiked] = useState(false);
 
+  // Toggles the follow/unfollow state
   const handleFollow = () => setIsFollowing(!isFollowing);
+
+  // Toggles the like state
   const handleLike = () => setLiked(!liked);
 
   return (
+    // Main container of the post
     <div className="flex bg-[#26242E] rounded-2xl p-4 mb-6 shadow-md w-full max-w-3xl mx-auto items-center text-white">
       <div className="flex flex-col flex-1">
         {/* User info */}
@@ -53,6 +61,7 @@ export default function Post({
           </h3>
           <p className="text-gray-300 text-sm mb-2">{review}</p>
           <div className="flex items-center gap-2">
+            {/* Popcorn icon */}
             <img src={popcornUrl} alt="popcorn" className="w-5 h-5" />
             <span className="text-sm text-gray-400">{rating}/5</span>
           </div>
@@ -60,20 +69,21 @@ export default function Post({
 
         {/* Like and Comment buttons */}
         <div className="flex gap-4 mt-4">
+          {/* Like button */}
           <button onClick={handleLike}>
             <i
-              className={`bx ${
-                liked ? "bxs-heart" : "bx-heart"
-              } text-[#FFC267] text-xl`}
+              className={`bx ${liked ? "bxs-heart" : "bx-heart"} text-[#FFC267] text-xl`}
             ></i>
           </button>
+
+          {/* Comment button */}
           <button>
             <i className="bx bx-comment text-[#FFC267] text-xl"></i>
           </button>
         </div>
       </div>
 
-      {/* Movie poster*/}
+      {/* Movie poster */}
       <div className="ml-6 w-40 h-56 rounded-lg overflow-hidden flex-shrink-0">
         <img src={poster} alt={movieTitle} className="w-full h-full object-cover" />
       </div>

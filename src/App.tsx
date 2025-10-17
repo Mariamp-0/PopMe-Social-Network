@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SearchBar from "./components/SearchBar";
-import Post from './components/Post'
+import Post from "./components/Post";
 
 interface PostData {
   id: number;
@@ -18,7 +18,6 @@ export default function App() {
   const [posts, setPosts] = useState<PostData[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<PostData[]>([]);
 
-  // Cargar datos del JSON
   useEffect(() => {
     fetch("/data/postData.json")
       .then((res) => res.json())
@@ -29,7 +28,6 @@ export default function App() {
       .catch((err) => console.error("Error al cargar JSON:", err));
   }, []);
 
-  // Filtrar según el texto
   const handleSearch = (term: string) => {
     const lower = term.toLowerCase();
     const filtered = posts.filter((post) =>
@@ -44,10 +42,8 @@ export default function App() {
         🎬 PopMe Social Network
       </h1>
 
-      {/* Barra de búsqueda */}
       <SearchBar onSearch={handleSearch} />
 
-      {/* Lista de posts */}
       <div className="mt-6 space-y-4">
         {filteredPosts.length > 0 ? (
           filteredPosts.map((post) => (
