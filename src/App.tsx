@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import Main from "./pages/Main";
 import SearchBar from "./components/SearchBar";
 import Post from "./components/Post";
 
-// Definición del tipo de datos de cada post
 interface PostData {
   id: number;
   userName: string;
@@ -20,7 +18,6 @@ export default function App() {
   const [posts, setPosts] = useState<PostData[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<PostData[]>([]);
 
-  // Cargar los datos del JSON al montar el componente
   useEffect(() => {
     fetch("/data/postData.json")
       .then((res) => res.json())
@@ -31,7 +28,6 @@ export default function App() {
       .catch((err) => console.error("Error al cargar JSON:", err));
   }, []);
 
-  // Filtrar los posts según el término de búsqueda
   const handleSearch = (term: string) => {
     const lower = term.toLowerCase();
     const filtered = posts.filter((post) =>
@@ -40,22 +36,15 @@ export default function App() {
     setFilteredPosts(filtered);
   };
 
-  // Render principal
   return (
-    <div className="min-h-screen bg-[#1B1B1F] text-white p-6">
-      {/* Página principal */}
-      <Main />
+    <div className="min-h-screen bg-[#1B1B1F] text-white px-6 py-8 flex flex-col items-center">
+      {/* 🔍 Barra de búsqueda */}
+      <div className="w-full max-w-md mb-8">
+        <SearchBar onSearch={handleSearch} />
+      </div>
 
-      {/* Título */}
-      <h1 className="text-3xl font-bold text-center mb-6 text-[#AA0235]">
-        🎬 PopMe Social Network
-      </h1>
-
-      {/* Barra de búsqueda */}
-      <SearchBar onSearch={handleSearch} />
-
-      {/* Lista de posts */}
-      <div className="mt-6 space-y-4">
+      {/* 🎞️ Lista de posts */}
+      <div className="w-full max-w-4xl space-y-4">
         {filteredPosts.length > 0 ? (
           filteredPosts.map((post) => (
             <Post
@@ -67,7 +56,7 @@ export default function App() {
               review={post.reviewText}
               rating={post.rating}
               poster={post.movieImage}
-              popcornUrl="https://cdn-icons-png.flaticon.com/512/4221/4221419.png"
+              popcornUrl="https://cdn-icons-png.flaticon.com/512/1828/1828884.png"
             />
           ))
         ) : (
