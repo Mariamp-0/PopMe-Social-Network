@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-// Defines what data the post component will receive
 interface PostProps {
   username: string;
   handle: string;
@@ -19,73 +18,115 @@ export default function Post({
   year,
   review,
   rating,
-  poster,
   popcornUrl,
+  poster,
 }: PostProps) {
-  // State to check if the user is followed
   const [isFollowing, setIsFollowing] = useState(false);
-
-  // State to check if the post is liked
   const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(Math.floor(Math.random() * 200));
 
-  // Toggles the follow/unfollow state
   const handleFollow = () => setIsFollowing(!isFollowing);
 
-  // Toggles the like state
-  const handleLike = () => setLiked(!liked);
+  const handleLike = () => {
+    setLiked(!liked);
+    setLikeCount(liked ? likeCount - 1 : likeCount + 1);
+  };
+
+  // Generar estrellas según el rating
+  const renderStars = () => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <i
+        key={i}
+        className={`bx ${i < rating ? "bxs-star" : "bx-star"} text-[#FFC267]`}
+      ></i>
+    ));
+  };
 
   return (
-    // Main container of the post
-    <div className="flex bg-[#26242E] rounded-2xl p-4 mb-6 shadow-md w-full max-w-3xl mx-auto items-center text-white">
-      <div className="flex flex-col flex-1">
-        {/* User info */}
-        <div className="flex justify-between items-center mb-3">
-          <div>
-            <h2 className="font-semibold text-lg">{username}</h2>
-            <p className="text-sm text-gray-400">{handle}</p>
+    <div className="bg-[#26242E] rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+      <div className="flex gap-6">
+        {/* Contenido principal */}
+        <div className="flex-1">
+          {/* User info */}
+          <div className="flex justify-between items-start mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#AA0235] to-[#FFC267] p-0.5">
+                <div className="w-full h-full rounded-full bg-[#26242E] flex items-center justify-center">
+                  <span className="text-xl font-bold text-[#AA0235]">
+                    {username.charAt(0)}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <h2 className="font-semibold text-lg">{username}</h2>
+                <p className="text-sm text-gray-400">{handle}</p>
+              </div>
+            </div>
+
+            {/* Follow button */}
+            <button
+              onClick={handleFollow}
+              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                isFollowing
+                  ? "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                  : "bg-[#AA0235] text-white hover:bg-[#8a0228]"
+              }`}
+            >
+              {isFollowing ? "Following" : "Follow"}
+            </button>
           </div>
 
-          {/* Follow button */}
-          <button
-            onClick={handleFollow}
-            className="bg-[#AA0235] text-white px-4 py-1 rounded-full text-sm hover:opacity-90 transition"
-          >
-            {isFollowing ? "Following" : "Follow"}
-          </button>
-        </div>
+          {/* Movie info */}
+          <div className="mb-4">
+            <h3 className="text-2xl font-bold mb-2 text-[#FFC267]">
+              {movieTitle} <span className="text-gray-400 text-xl">({year})</span>
+            </h3>
+            <p className="text-gray-300 leading-relaxed mb-3">{review}</p>
+            
+            {/* Rating */}
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1">{renderStars()}</div>
+              <span className="text-sm text-gray-400 ml-2">
+                {rating}/5
+              </span>
+            </div>
+          </div>
 
-        {/* Movie info */}
-        <div>
-          <h3 className="text-xl font-semibold mb-1">
-            {movieTitle} ({year})
-          </h3>
-          <p className="text-gray-300 text-sm mb-2">{review}</p>
-          <div className="flex items-center gap-2">
-            {/* Popcorn icon */}
-            <img src={popcornUrl} alt="popcorn" className="w-5 h-5" />
-            <span className="text-sm text-gray-400">{rating}/5</span>
+          {/* Action buttons */}
+          <div className="flex items-center gap-6 pt-4 border-t border-gray-700">
+            <button
+              onClick={handleLike}
+              className="flex items-center gap-2 group"
+            >
+              <i
+                className={`bx ${liked ? "bxs-heart" : "bx-heart"} text-2xl transition-all ${
+                  liked ? "text-red-500 scale-110" : "text-gray-400 group-hover:text-red-500"
+                }`}
+              ></i>
+              <span className="text-sm text-gray-400">{likeCount}</span>
+            </button>
+
+            <button className="flex items-center gap-2 group">
+              <i className="bx bx-comment text-2xl text-gray-400 group-hover:text-[#FFC267] transition-colors"></i>
+              <span className="text-sm text-gray-400">
+                {Math.floor(Math.random() * 50)}
+              </span>
+            </button>
+
+            <button className="flex items-center gap-2 group">
+              <i className="bx bx-share text-2xl text-gray-400 group-hover:text-[#FFC267] transition-colors"></i>
+            </button>
           </div>
         </div>
 
-        {/* Like and Comment buttons */}
-        <div className="flex gap-4 mt-4">
-          {/* Like button */}
-          <button onClick={handleLike}>
-            <i
-              className={`bx ${liked ? "bxs-heart" : "bx-heart"} text-[#FFC267] text-xl`}
-            ></i>
-          </button>
-
-          {/* Comment button */}
-          <button>
-            <i className="bx bx-comment text-[#FFC267] text-xl"></i>
-          </button>
+        {/* Movie poster */}
+        <div className="w-48 h-72 flex-shrink-0 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
+          <img
+            src={poster}
+            alt={movieTitle}
+            className="w-full h-full object-cover"
+          />
         </div>
-      </div>
-
-      {/* Movie poster */}
-      <div className="ml-6 w-40 h-56 rounded-lg overflow-hidden flex-shrink-0">
-        <img src={poster} alt={movieTitle} className="w-full h-full object-cover" />
       </div>
     </div>
   );
