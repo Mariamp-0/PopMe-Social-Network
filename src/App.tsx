@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import SearchBar from "./components/SearchBar";
 import Post from "./components/Post";
+import Sidebar from "./components/sidebar/sidebar";
 
 // Definición del tipo de datos de cada post
 interface PostData {
@@ -18,6 +19,7 @@ interface PostData {
 export default function App() {
   const [posts, setPosts] = useState<PostData[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<PostData[]>([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Cargar los datos del JSON al montar el componente
   useEffect(() => {
@@ -41,12 +43,28 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#1B1B1F] text-white">
+      {/* Sidebar desplegable */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
       {/* Header con título y barra de búsqueda */}
       <header className="sticky top-0 z-10 bg-[#26242E] shadow-lg">
         <div className="max-w-4xl mx-auto px-6 py-4">
-          <h1 className="text-3xl font-bold text-center mb-4 text-[#AA0235]">
-            🎬 PopMe Social Network
-          </h1>
+          <div className="flex items-center gap-4 mb-4">
+            {/* Botón del menú hamburguesa */}
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="text-[#AA0235] hover:text-[#FFC267] transition"
+            >
+              <i className="bx bx-menu text-3xl"></i>
+            </button>
+            
+            <h1 className="text-3xl font-bold text-[#AA0235] flex-1 text-center">
+              🎬 PopMe Social Network
+            </h1>
+            
+            {/* Espacio para mantener el título centrado */}
+            <div className="w-8"></div>
+          </div>
           <SearchBar onSearch={handleSearch} />
         </div>
       </header>

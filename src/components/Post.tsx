@@ -18,8 +18,7 @@ export default function Post({
   year,
   review,
   rating,
-  popcornUrl,
-  poster,
+  poster
 }: PostProps) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -120,7 +119,7 @@ export default function Post({
         </div>
 
         {/* Movie poster */}
-        <div className="w-48 h-72 flex-shrink-0 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
+        <div className="w-48 h-72 shrink-0 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
           <img
             src={poster}
             alt={movieTitle}

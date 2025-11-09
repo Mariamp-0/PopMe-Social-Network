@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { ChangeEvent } from "react"; // 👈 Importamos ChangeEvent solo como tipo
+import type { ChangeEvent } from "react"; // Importamos ChangeEvent solo como tipo
 
 interface SearchBarProps {
   onSearch: (term: string) => void; // función que recibe el texto del input
@@ -11,7 +11,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
-    onSearch(value); // 👈 envía el valor al componente padre (App.tsx)
+    onSearch(value); // envía el valor al componente padre (App.tsx)
   };
 
   return (
