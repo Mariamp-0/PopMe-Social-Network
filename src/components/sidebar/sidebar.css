@@ -11,12 +11,18 @@
   position: fixed;
   top: 0;
   left: 0;
-  transition: width 0.3s ease;
+  transition: transform 0.3s ease;
+  z-index: 50;
 }
 
-/* when the sidebar is collapsed */
+/* when the sidebar is collapsed/hidden */
 .sidebar.closed {
-  width: 70px;
+  transform: translateX(-100%);
+}
+
+/* when the sidebar is open */
+.sidebar.open {
+  transform: translateX(0);
 }
 
 /* small button to open/close sidebar */
@@ -24,9 +30,15 @@
   background: none;
   border: none;
   color: white;
-  font-size: 1.4rem;
+  font-size: 2rem;
   cursor: pointer;
   align-self: flex-end;
+  transition: color 0.2s;
+  padding: 0.5rem;
+}
+
+.menu-toggle:hover {
+  color: #FFC267;
 }
 
 /* navigation section */
@@ -43,12 +55,27 @@
   gap: 1rem;
   margin: 1.2rem 0;
   cursor: pointer;
-  transition: opacity 0.2s;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s, color 0.2s;
+  font-size: 1rem;
+}
+
+.nav li i {
+  font-size: 1.5rem;
 }
 
 /* subtle hover effect */
 .nav li:hover {
-  opacity: 0.8;
+  background-color: #6B0821;
+  color: #FFC267;
+}
+
+/* active menu item */
+.nav li.active {
+  background-color: #6B0821;
+  color: #FFC267;
+  font-weight: 500;
 }
 
 /* logout button at the bottom */
@@ -60,22 +87,39 @@
   border: none;
   color: white;
   cursor: pointer;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s, color 0.2s;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.logout i {
+  font-size: 1.5rem;
+}
+
+.logout:hover {
+  background-color: #6B0821;
+  color: #FFC267;
 }
 
 /* hide text when sidebar is collapsed */
 .sidebar.closed span {
   display: none;
 }
+
 .logo-section {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 2rem;
+  padding: 1rem 0;
 }
 
 .logo {
   width: 120px;
   height: auto;
+  transition: width 0.3s;
 }
 
 .sidebar.closed .logo {

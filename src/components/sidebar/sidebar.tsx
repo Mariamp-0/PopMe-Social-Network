@@ -1,52 +1,82 @@
 import { useState } from "react";
 import "./sidebar.css";
-import { Home, Film, Heart, User, LogOut, Menu } from "lucide-react";
 import logo from "../../assets/Popme.png";
 
-const Sidebar = () => {
-  // toggle menu visibility (open/close)
-  const [isOpen, setIsOpen] = useState(true);
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
+  const [activeMenu, setActiveMenu] = useState("Home");
 
   return (
-    <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
-      {/* logo section */}
-      <div className="logo-section">
-        <img src={logo} alt="PopMe logo" className="logo" />
-      </div>
+    <>
+      {/* Overlay oscuro cuando el sidebar está abierto */}
+      {isOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 40,
+            transition: 'opacity 0.3s'
+          }}
+          onClick={onClose}
+        ></div>
+      )}
 
-      {/* menu toggle button (hamburger icon) */}
-      <button className="menu-toggle" onClick={() => setIsOpen(!isOpen)}>
-        <Menu />
-      </button>
+      <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
+        {/* logo section */}
+<div className="logo-section">
+  <img src={logo} alt="PopMe logo" className="logo" />
+</div>
+        {/* menu toggle button (hamburger icon) */}
+        <button className="menu-toggle" onClick={onClose}>
+          <i className="bx bx-x"></i>
+        </button>
 
-      {/* main navigation links */}
-      <nav className="nav">
-        <ul>
-          <li>
-            <Home />
-            <span>Home</span>
-          </li>
-          <li>
-            <Film />
-            <span>Movies</span>
-          </li>
-          <li>
-            <Heart />
-            <span>Collections</span>
-          </li>
-          <li>
-            <User />
-            <span>Profile</span>
-          </li>
-        </ul>
-      </nav>
+        {/* main navigation links */}
+        <nav className="nav">
+          <ul>
+            <li
+              className={activeMenu === "Home" ? "active" : ""}
+              onClick={() => setActiveMenu("Home")}
+            >
+              <i className="bx bx-home"></i>
+              <span>Home</span>
+            </li>
+            <li
+              className={activeMenu === "Movies" ? "active" : ""}
+              onClick={() => setActiveMenu("Movies")}
+            >
+              <i className="bx bx-movie"></i>
+              <span>Movies</span>
+            </li>
+            <li
+              className={activeMenu === "Collections" ? "active" : ""}
+              onClick={() => setActiveMenu("Collections")}
+            >
+              <i className="bx bx-heart"></i>
+              <span>Collections</span>
+            </li>
+            <li
+              className={activeMenu === "Profile" ? "active" : ""}
+              onClick={() => setActiveMenu("Profile")}
+            >
+              <i className="bx bx-user"></i>
+              <span>Profile</span>
+            </li>
+          </ul>
+        </nav>
 
-      {/* logout button */}
-      <button className="logout">
-        <LogOut />
-        <span>Log Out</span>
-      </button>
-    </aside>
+        {/* logout button */}
+        <button className="logout">
+          <i className="bx bx-log-out"></i>
+          <span>Log Out</span>
+        </button>
+      </aside>
+    </>
   );
 };
 
