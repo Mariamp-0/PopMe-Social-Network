@@ -3,6 +3,7 @@ import SearchBar from "./components/SearchBar";
 import Post from "./components/Post";
 import Sidebar from "./components/sidebar/sidebar";
 import CollectionsPage from "./pages/Collections";
+import { getPosts } from "./services/api";
 
 interface PostData {
   id: number;
@@ -14,6 +15,8 @@ interface PostData {
   rating: number;
   reviewText: string;
   movieImage: string;
+  likes: number;
+  comments: any[];
 }
 
 export default function App() {
@@ -21,17 +24,38 @@ export default function App() {
   const [filteredPosts, setFilteredPosts] = useState<PostData[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activePage, setActivePage] = useState("Home");
-  const [collectionsSearch, setCollectionsSearch] = useState(""); // 👈 nuevo
+  const [collectionsSearch, setCollectionsSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/data/postData.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setPosts(data);
-        setFilteredPosts(data);
-      })
-      .catch((err) => console.error("Error al cargar JSON:", err));
+    loadPosts();
   }, []);
+
+  const loadPosts = async () => {
+    try {
+      setLoading(true);
+      const data = await getPosts();
+      setPosts(data);
+      setFilteredPosts(data);
+    } catch (err) {
+      console.error("Error al cargar posts desde API:", err);
+      // Fallback al JSON local si falla la API
+      fetch("/data/postData.json")
+        .then((res) => res.json())
+        .then((data) => {
+          const postsWithLikes = data.map((post: any) => ({
+            ...post,
+            likes: post.likes || Math.floor(Math.random() * 200),
+            comments: post.comments || []
+          }));
+          setPosts(postsWithLikes);
+          setFilteredPosts(postsWithLikes);
+        })
+        .catch((err) => console.error("Error al cargar JSON local:", err));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSearch = (term: string) => {
     const lower = term.toLowerCase();
@@ -43,7 +67,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#1B1B1F] text-white">
-      {/* Sidebar */}
       <Sidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
@@ -65,10 +88,8 @@ export default function App() {
             <div className="w-8"></div>
           </div>
 
-          {/* Buscador de Home */}
           {activePage === "Home" && <SearchBar onSearch={handleSearch} />}
 
-          {/* Buscador de Collections - centrado */}
           {activePage === "Collections" && (
             <div className="flex justify-center">
               <div className="relative w-full max-w-md">
@@ -89,10 +110,16 @@ export default function App() {
       <main className="max-w-4xl mx-auto px-6 py-6">
         {activePage === "Home" && (
           <div className="space-y-6">
-            {filteredPosts.length > 0 ? (
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FFC267] mx-auto"></div>
+                <p className="text-gray-400 mt-4">Loading posts...</p>
+              </div>
+            ) : filteredPosts.length > 0 ? (
               filteredPosts.map((post) => (
                 <Post
                   key={post.id}
+                  id={post.id}
                   username={post.userName}
                   handle={post.userHandle}
                   movieTitle={post.movieTitle}
@@ -101,6 +128,8 @@ export default function App() {
                   rating={post.rating}
                   poster={post.movieImage}
                   popcornUrl="https://cdn-icons-png.flaticon.com/512/4221/4221419.png"
+                  initialLikes={post.likes}
+                  initialComments={post.comments?.length || 0}
                 />
               ))
             ) : (
@@ -113,7 +142,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Collections con búsqueda desde App */}
         {activePage === "Collections" && (
           <CollectionsPage searchQuery={collectionsSearch} />
         )}
