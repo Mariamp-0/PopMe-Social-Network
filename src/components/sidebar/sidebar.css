@@ -38,7 +38,7 @@
 }
 
 .menu-toggle:hover {
-  color: #FFC267;
+  color: #ffc267;
 }
 
 /* navigation section */
@@ -48,37 +48,38 @@
   margin: 0;
 }
 
-/* each navigation item */
-.nav li {
+/* links estilo general */
+.menu-link {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin: 1.2rem 0;
-  cursor: pointer;
   padding: 0.75rem;
   border-radius: 0.5rem;
-  transition: background-color 0.2s, color 0.2s;
+  text-decoration: none;
+  color: white;
+  transition: all 0.2s ease;
   font-size: 1rem;
 }
 
-.nav li i {
+.menu-link i {
   font-size: 1.5rem;
 }
 
-/* subtle hover effect */
-.nav li:hover {
-  background-color: #6B0821;
-  color: #FFC267;
+/* hover */
+.menu-link:hover {
+  background-color: #6b0821;
+  color: #ffc267;
 }
 
-/* active menu item */
-.nav li.active {
-  background-color: #6B0821;
-  color: #FFC267;
-  font-weight: 500;
+/* activo con glow */
+.menu-link.active {
+  background-color: #aa0235;
+  box-shadow: 0 0 12px rgba(255, 194, 103, 0.6);
+  color: #ffc267;
+  font-weight: 600;
 }
 
-/* logout button at the bottom */
+/* logout */
 .logout {
   display: flex;
   align-items: center;
@@ -99,15 +100,11 @@
 }
 
 .logout:hover {
-  background-color: #6B0821;
-  color: #FFC267;
+  background-color: #6b0821;
+  color: #ffc267;
 }
 
-/* hide text when sidebar is collapsed */
-.sidebar.closed span {
-  display: none;
-}
-
+/* logo */
 .logo-section {
   display: flex;
   justify-content: center;
@@ -122,6 +119,12 @@
   transition: width 0.3s;
 }
 
+/* cuando sidebar cerrado */
 .sidebar.closed .logo {
   width: 40px;
+}
+
+/* texto oculto al cerrar */
+.sidebar.closed span {
+  display: none;
 }

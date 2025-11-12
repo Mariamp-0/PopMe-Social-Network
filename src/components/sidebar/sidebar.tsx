@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import "./sidebar.css";
 import logo from "../../assets/Popme.png";
 
@@ -16,61 +17,97 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       {isOpen && (
         <div
           style={{
-            position: 'fixed',
+            position: "fixed",
             inset: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
             zIndex: 40,
-            transition: 'opacity 0.3s'
+            transition: "opacity 0.3s",
           }}
           onClick={onClose}
         ></div>
       )}
 
       <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
-        {/* logo section */}
-<div className="logo-section">
-  <img src={logo} alt="PopMe logo" className="logo" />
-</div>
-        {/* menu toggle button (hamburger icon) */}
+        {/* logo */}
+        <div className="logo-section">
+          <img src={logo} alt="PopMe logo" className="logo" />
+        </div>
+
+        {/* botón para cerrar */}
         <button className="menu-toggle" onClick={onClose}>
           <i className="bx bx-x"></i>
         </button>
 
-        {/* main navigation links */}
+        {/* navegación principal */}
         <nav className="nav">
           <ul>
-            <li
-              className={activeMenu === "Home" ? "active" : ""}
-              onClick={() => setActiveMenu("Home")}
-            >
-              <i className="bx bx-home"></i>
-              <span>Home</span>
+            <li>
+              <NavLink
+                to="/"
+                onClick={() => {
+                  setActiveMenu("Home");
+                  onClose();
+                }}
+                className={({ isActive }) =>
+                  isActive ? "menu-link active" : "menu-link"
+                }
+              >
+                <i className="bx bx-home"></i>
+                <span>Home</span>
+              </NavLink>
             </li>
-            <li
-              className={activeMenu === "Movies" ? "active" : ""}
-              onClick={() => setActiveMenu("Movies")}
-            >
-              <i className="bx bx-movie"></i>
-              <span>Movies</span>
+
+            <li>
+              <NavLink
+                to="/movies"
+                onClick={() => {
+                  setActiveMenu("Movies");
+                  onClose();
+                }}
+                className={({ isActive }) =>
+                  isActive ? "menu-link active" : "menu-link"
+                }
+              >
+                <i className="bx bx-movie"></i>
+                <span>Movies</span>
+              </NavLink>
             </li>
-            <li
-              className={activeMenu === "Collections" ? "active" : ""}
-              onClick={() => setActiveMenu("Collections")}
-            >
-              <i className="bx bx-heart"></i>
-              <span>Collections</span>
+
+            <li>
+              <NavLink
+                to="/collections"
+                onClick={() => {
+                  setActiveMenu("Collections");
+                  onClose();
+                }}
+                className={({ isActive }) =>
+                  isActive ? "menu-link active" : "menu-link"
+                }
+              >
+                <i className="bx bx-heart"></i>
+                <span>Collections</span>
+              </NavLink>
             </li>
-            <li
-              className={activeMenu === "Profile" ? "active" : ""}
-              onClick={() => setActiveMenu("Profile")}
-            >
-              <i className="bx bx-user"></i>
-              <span>Profile</span>
+
+            <li>
+              <NavLink
+                to="/profile"
+                onClick={() => {
+                  setActiveMenu("Profile");
+                  onClose();
+                }}
+                className={({ isActive }) =>
+                  isActive ? "menu-link active" : "menu-link"
+                }
+              >
+                <i className="bx bx-user"></i>
+                <span>Profile</span>
+              </NavLink>
             </li>
           </ul>
         </nav>
 
-        {/* logout button */}
+        {/* botón logout */}
         <button className="logout">
           <i className="bx bx-log-out"></i>
           <span>Log Out</span>

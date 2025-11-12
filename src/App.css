@@ -1,6 +1,10 @@
-<<<<<<< HEAD
-@import "tailwindcss";
-@custom-variant dark (&:where(.dark, .dark *));
-=======
-@import "tailwindcss";
->>>>>>> 922f5dc4f9f572b56d6976f15cbb303972715576
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Puedes agregar estilos globales aquí si los necesitas */
+body {
+  background-color: #1b1b1f;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+}
